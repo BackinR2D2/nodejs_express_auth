@@ -1,0 +1,18 @@
+version: "3"
+services:
+  task_app:
+    container_name: task_app
+    image: task_app
+    restart: always
+    build: .
+    ports:
+      - "8080:8080"
+    links:
+      - mongo
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    ports:
+      - '27018:27017'
