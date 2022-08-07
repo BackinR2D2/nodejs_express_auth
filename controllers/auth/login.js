@@ -1,7 +1,8 @@
-import User from '../../db/models/user.js';
 import Joi from 'joi';
 import verifyPassword from '../../helpers/auth/verifyPassword.js';
 import generateToken from '../../helpers/auth/generateToken.js';
+import sanitize from 'sanitize-html';
+import loginServices from '../../services/auth/login.js';
 
 const schema = Joi.object({
     username: Joi.string().required().max(25),
@@ -10,7 +11,9 @@ const schema = Joi.object({
 
 async function login(req, res) {
   try {
-    const {username, password} = req.body;
+    let {username, password} = req.body;
+    username = sanitize(username);
+    password = sanitize(password);
     const {error} = schema.validate({username, password});
     if (error) {
         res.status(400).json({
@@ -19,25 +22,24 @@ async function login(req, res) {
         });
         return;
     }
-    const existingUser = await User.findOne({username});
-    if(!existingUser) {
+   
+    const user = await loginServices.getUser(username);
+
+    if(!user) {
         res.status(404).json({
             status: 0,
             message: 'User does not exist',
         });
     } else {
-        const isValid = await verifyPassword(password, existingUser.password);
+        const isValid = await verifyPassword(password, user.password);
         if(!isValid) {
-            res.status(401).json({
+            res.status(400).json({
                 status: 0,
                 message: 'Invalid password or username',
             });
         } else {
-            const token = generateToken(existingUser._id);
-            res.status(200).json({
-                status: 1,
-                token
-            });
+            const token = generateToken(user._id);
+            res.cookie('token', token, {httpOnly: true}).json({ status: 1 });
         }
     }
 

@@ -1,5 +1,11 @@
 node_modules
 package-lock.json
 .env
-Dockerfile
 data
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
