@@ -1,6 +1,6 @@
 # Authentication
 
-- **##POST /api/auth/register**
+## - **POST /api/auth/register**
 Request Body: {
     username: String | Required | MAX (25),
     password: String | Required | MAX (25),
@@ -12,7 +12,7 @@ Response: {
     500: Server Error
 }
 
-- **##POST /api/auth/login**
+## - **POST /api/auth/login**
 Request Body: {
     username: String | Required | MAX (25),
     password: String | Required | MAX (25) | MIN (8)
@@ -26,7 +26,7 @@ Response: {
 
 # User Management
 
-- **##GET /api/user**
+## - **GET /api/user**
 Request Body: {}
 Request Cookie: {
     token: JWT Token with user's ID
@@ -37,7 +37,7 @@ Response Body: {
     500: Server Error
 }
 
-- **##PUT /api/user/username**
+## - **PUT /api/user/username**
 Request Body: {
     newUsername: String | Required | MAX (25)
 }
@@ -50,7 +50,7 @@ Response Body: {
     500: Server Error
 }
 
-- **##PUT /api/user/password**
+## - **PUT /api/user/password**
 Request Body: {
     newPassword: String | Required | MAX (25) | MIN (8)
 }
@@ -63,7 +63,7 @@ Response Body: {
     500: Server Error
 }
 
-- **##DELETE /api/user**
+## - **DELETE /api/user**
 Request Body: {}
 Request Cookie: {
     token: JWT Token with user's ID
